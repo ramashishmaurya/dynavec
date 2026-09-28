@@ -16,8 +16,10 @@ except ImportError:
 pytestmark = pytest.mark.skipif(not HAS_SERVER, reason="FastAPI not installed")
 
 
+from typing import Any
+
 @pytest.fixture
-def mock_client():
+def mock_client() -> AsyncMock:
     client = AsyncMock(spec=AsyncDynavec)
     
     # Mock search
@@ -35,12 +37,12 @@ def mock_client():
 
 
 @pytest.fixture
-def client(mock_client):
+def client(mock_client: AsyncMock) -> TestClient:
     app = create_app(mock_client)
     return TestClient(app)
 
 
-def test_search(client, mock_client):
+def test_search(client: TestClient, mock_client: AsyncMock) -> None:
     resp = client.post("/search", json={"query": "test", "top_k": 2})
     assert resp.status_code == 200
     data = resp.json()
@@ -56,7 +58,7 @@ def test_search(client, mock_client):
     )
 
 
-def test_upsert(client, mock_client):
+def test_upsert(client: TestClient, mock_client: AsyncMock) -> None:
     resp = client.post("/upsert", json={
         "documents": [{"id": "doc1", "text": "hello"}],
         "namespace": "custom"
@@ -69,7 +71,7 @@ def test_upsert(client, mock_client):
     mock_client.upsert.assert_awaited_once()
 
 
-def test_delete(client, mock_client):
+def test_delete(client: TestClient, mock_client: AsyncMock) -> None:
     resp = client.post("/delete", json={"ids": ["doc1"]})
     assert resp.status_code == 200
     mock_client.delete.assert_awaited_once_with(["doc1"], namespace="default")

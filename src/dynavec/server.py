@@ -74,7 +74,7 @@ def create_app(client: AsyncDynavec) -> FastAPI:
     async def upsert(req: UpsertRequest) -> JSONResponse:
         from .models import Document
 
-        docs = []
+        docs: list[Any] = []
         for d in req.documents:
             try:
                 docs.append(Document(**d.model_dump()))
@@ -91,8 +91,7 @@ def create_app(client: AsyncDynavec) -> FastAPI:
     @app.post("/delete")
     async def delete(req: DeleteRequest) -> JSONResponse:
         try:
-            if hasattr(client, "delete"):
-                await client.delete(req.ids, namespace=req.namespace) # type: ignore[attr-defined]
+            await client.delete(req.ids, namespace=req.namespace)
             return JSONResponse({"success": True})
         except Exception as e:
             logging.error(f"Delete error: {e}", exc_info=True)
