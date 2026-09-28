@@ -47,6 +47,7 @@ redis = ["redis>=5.0"]                            # RedisCache / AWS ElastiCache
 mcp = ["mcp>=1.0; python_version >= '3.10'"]       # MCP client ingestion
 pinecone = ["pinecone>=5.0"]                      # for benchmarks/examples comparison
 ingest = ["pypdf>=4.0", "python-docx>=1.1", "python-pptx>=0.6", "openpyxl>=3.1", "beautifulsoup4>=4.12", "requests>=2.31", "PyYAML>=6.0",]
+server = ["fastapi>=0.100.0", "uvicorn>=0.23.0", "pydantic>=2.0.0"]
 
 # --- Agent framework integrations ---
 langchain = ["langchain-core>=0.3"]
@@ -79,6 +80,8 @@ all = [
     "crewai>=0.70,!=1.14.0; python_version >= '3.10'",
     "semantic-kernel>=1.44",
     "dspy>=3.3; python_version >= '3.10'",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
 ]
 
 # --- Dev / test / benchmark ---
@@ -91,6 +94,7 @@ dev = [
     "mypy>=1.11,<2.0",
     "ruff>=0.6",
     "pre-commit>=3.5",
+    "httpx>=0.25",
 ]
 benchmark = [
     "pandas>=2.0",
