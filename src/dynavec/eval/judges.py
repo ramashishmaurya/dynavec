@@ -139,7 +139,8 @@ class GeminiJudge(BaseJudge):
         temperature: float = 0.0,
     ) -> None:
         try:
-            import google.generativeai as genai
+            import google.generativeai as _genai_raw
+            genai: Any = _genai_raw
         except ImportError as exc:  # pragma: no cover - import guard
             raise MissingDependencyError("GeminiJudge", "google-generativeai", "gemini") from exc
 

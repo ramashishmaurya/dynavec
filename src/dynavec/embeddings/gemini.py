@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import cast
+from typing import Any, cast
 
 from ..exceptions import MissingDependencyError
 from .base import Embedder, Vector
@@ -32,7 +32,8 @@ class GeminiEmbedder(Embedder):
         dimension: int | None = None,
     ) -> None:
         try:
-            import google.generativeai as genai
+            import google.generativeai as _genai_raw
+            genai: Any = _genai_raw
         except ImportError as exc:  # pragma: no cover - import guard
             raise MissingDependencyError("GeminiEmbedder", "google-generativeai", "gemini") from exc
 
